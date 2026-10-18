@@ -542,6 +542,14 @@ export type Database = {
         Args: { _archived: boolean; _opp: string; _reason: string }
         Returns: undefined
       }
+      set_user_access: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _store: string
+          _user: string
+        }
+        Returns: undefined
+      }
     }
     Enums: {
       action_status: "pendente" | "concluida" | "cancelada" | "substituida"
