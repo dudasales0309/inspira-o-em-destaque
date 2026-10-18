@@ -15,6 +15,20 @@
       "when": 1792347597541,
       "tag": "0001_crm_seed_demo",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1792348077761,
+      "tag": "0002_signup_and_team",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1792348094821,
+      "tag": "0003_pending_new_users",
+      "breakpoints": true
     }
   ]
 }

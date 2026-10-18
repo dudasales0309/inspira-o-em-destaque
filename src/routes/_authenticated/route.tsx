@@ -1,7 +1,7 @@
 import { createFileRoute, Link, Outlet, redirect, useNavigate } from "@tanstack/react-router";
 import { useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
-import { BarChart3, CalendarCheck, Columns3, Home, LogOut, Menu, Target, Users, X } from "lucide-react";
+import { BarChart3, ShieldCheck, CalendarCheck, Columns3, Home, LogOut, Menu, Target, Users, X } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { Brand } from "@/components/brand";
 import { ROLE_LABEL, useMe } from "@/lib/crm";
@@ -23,6 +23,7 @@ const NAV = [
   { to: "/funil", label: "Funil de vendas", icon: Columns3, op: true },
   { to: "/rotina", label: "Minha Rotina", icon: CalendarCheck, op: true },
   { to: "/relatorios", label: "Relatórios", icon: BarChart3, op: false, reports: true },
+  { to: "/equipe", label: "Equipe", icon: ShieldCheck, op: false, director: true },
 ] as const;
 
 function AppShell() {
@@ -38,7 +39,7 @@ function AppShell() {
     navigate({ to: "/auth", replace: true });
   }
 
-  const items = NAV.filter((n) => (n.op ? me?.isOperational : true) && (!("reports" in n) || me?.canReports));
+  const items = NAV.filter((n) => (n.op ? me?.isOperational : true) && (!("reports" in n) || me?.canReports) && (!("director" in n) || me?.roles.includes("diretor")));
   const initials = (me?.full_name ?? "").split(" ").map((s) => s[0]).slice(0, 2).join("").toUpperCase();
 
   const sidebar = (
@@ -98,7 +99,14 @@ function AppShell() {
         </div>
       )}
       <main className={cn("mx-auto max-w-[1400px] px-4 py-6 sm:px-8 lg:py-10")}>
-        <Outlet />
+        {me && me.roles.length === 0 ? (
+          <div className="mx-auto max-w-md py-24 text-center">
+            <h1 className="text-2xl font-semibold">Cadastro aguardando liberação</h1>
+            <p className="mt-2 text-muted-foreground">O Diretor precisa definir seu perfil e sua loja. Depois disso, é só entrar novamente.</p>
+          </div>
+        ) : (
+          <Outlet />
+        )}
       </main>
     </div>
   );
