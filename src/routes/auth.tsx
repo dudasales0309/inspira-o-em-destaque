@@ -21,23 +21,31 @@ export const Route = createFileRoute("/auth")({
   component: AuthPage,
 });
 
-const DEMO = [
-  { label: "Vendedor · Loja 1", email: "vendedor1@demo.com" },
-  { label: "Gerente · Loja 1", email: "gerente1@demo.com" },
-  { label: "Supervisor", email: "supervisor@demo.com" },
-  { label: "Diretor", email: "diretor@demo.com" },
-  { label: "Marketing", email: "marketing@demo.com" },
-];
-
 function AuthPage() {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const [mode, setMode] = useState<"login" | "signup">("login");
+  const [name, setName] = useState("");
 
-  async function signIn(e?: string, p?: string) {
+  async function signUp() {
+    if (password.length < 8) return toast.error("A senha precisa ter pelo menos 8 caracteres.");
     setLoading(true);
-    const { error } = await supabase.auth.signInWithPassword({ email: (e ?? email).trim(), password: p ?? password });
+    const { error } = await supabase.auth.signUp({
+      email: email.trim(),
+      password,
+      options: { emailRedirectTo: window.location.origin, data: { full_name: name.trim() } },
+    });
+    setLoading(false);
+    if (error) return toast.error(error.message);
+    toast.success("Cadastro feito! Confirme pelo link enviado ao seu e-mail.");
+    setMode("login");
+  }
+
+  async function signIn() {
+    setLoading(true);
+    const { error } = await supabase.auth.signInWithPassword({ email: email.trim(), password });
     setLoading(false);
     if (error) {
       toast.error("E-mail ou senha incorretos.");
@@ -51,15 +59,24 @@ function AuthPage() {
       <div className="flex flex-col justify-center px-6 py-12 sm:px-16">
         <div className="mx-auto w-full max-w-sm">
           <Brand />
-          <h1 className="mt-12 text-3xl font-semibold tracking-tight">Bem-vindo de volta</h1>
-          <p className="mt-2 text-sm text-muted-foreground">Entre com seu e-mail e senha para acessar a carteira da loja.</p>
+          <h1 className="mt-12 text-3xl font-semibold tracking-tight">{mode === "login" ? "Bem-vindo de volta" : "Criar acesso"}</h1>
+          <p className="mt-2 text-sm text-muted-foreground">
+            {mode === "login" ? "Entre com seu e-mail e senha." : "O primeiro cadastro vira Diretor. Os demais aguardam a liberação do Diretor."}
+          </p>
           <form
             className="mt-8 space-y-4"
             onSubmit={(ev) => {
               ev.preventDefault();
-              signIn();
+              if (mode === "login") signIn();
+              else signUp();
             }}
           >
+            {mode === "signup" && (
+              <div className="space-y-1.5">
+                <Label htmlFor="name">Nome completo</Label>
+                <Input id="name" required maxLength={120} value={name} onChange={(e) => setName(e.target.value)} className="h-11" />
+              </div>
+            )}
             <div className="space-y-1.5">
               <Label htmlFor="email">E-mail</Label>
               <Input id="email" type="email" required value={email} onChange={(e) => setEmail(e.target.value)} className="h-11" />
@@ -69,20 +86,13 @@ function AuthPage() {
               <Input id="pw" type="password" required value={password} onChange={(e) => setPassword(e.target.value)} className="h-11" />
             </div>
             <Button type="submit" className="h-11 w-full" disabled={loading}>
-              {loading ? "Entrando..." : "Entrar"}
+              {loading ? "Aguarde..." : mode === "login" ? "Entrar" : "Criar conta"}
             </Button>
           </form>
 
-          <div className="mt-10">
-            <div className="eyebrow">Contas de demonstração · senha Demo@1234</div>
-            <div className="mt-3 flex flex-wrap gap-2">
-              {DEMO.map((d) => (
-                <Button key={d.email} variant="outline" size="sm" disabled={loading} onClick={() => signIn(d.email, "Demo@1234")}>
-                  {d.label}
-                </Button>
-              ))}
-            </div>
-          </div>
+          <button type="button" className="mt-6 text-sm text-primary hover:underline" onClick={() => setMode(mode === "login" ? "signup" : "login")}>
+            {mode === "login" ? "Ainda não tem acesso? Cadastre-se" : "Já tenho conta — entrar"}
+          </button>
         </div>
       </div>
       <div className="hidden items-center justify-center bg-primary text-primary-foreground lg:flex">
