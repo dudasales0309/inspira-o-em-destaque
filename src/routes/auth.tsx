@@ -30,7 +30,7 @@ function AuthPage() {
   const [name, setName] = useState("");
 
   async function signUp() {
-    if (password.length < 8) return toast.error("A senha precisa ter pelo menos 8 caracteres.");
+    if (password.length < 8) { toast.error("A senha precisa ter pelo menos 8 caracteres."); return; }
     setLoading(true);
     const { error } = await supabase.auth.signUp({
       email: email.trim(),
@@ -38,7 +38,7 @@ function AuthPage() {
       options: { emailRedirectTo: window.location.origin, data: { full_name: name.trim() } },
     });
     setLoading(false);
-    if (error) return toast.error(error.message);
+    if (error) { toast.error(error.message); return; }
     toast.success("Cadastro feito! Confirme pelo link enviado ao seu e-mail.");
     setMode("login");
   }
