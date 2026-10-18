@@ -3,7 +3,7 @@ import { CalendarDays, ChevronRight } from "lucide-react";
 import { BrandMark } from "@/components/brand";
 import { Empty, Loading, Stat } from "@/components/crm/common";
 import { NewOpportunityButton } from "@/components/crm/new-opportunity";
-import { ROLE_LABEL, STAGE_LABEL, brl, fmtDateTime, isOpen, pendingAction, routineBucket, useMe, useOpportunities, type Stage } from "@/lib/crm";
+import { ROLE_LABEL, STAGE_LABEL, fmtDateTime, isOpen, pendingAction, routineBucket, useMe, useOpportunities, type Stage } from "@/lib/crm";
 import { ReportsView } from "./relatorios";
 
 export const Route = createFileRoute("/_authenticated/painel")({
@@ -134,7 +134,6 @@ function OperationalPanel() {
           </div>
         </div>
       </div>
-      <p className="sr-only">{brl(0)}</p>
     </div>
   );
 }
