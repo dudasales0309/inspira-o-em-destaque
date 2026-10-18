@@ -277,7 +277,7 @@ function CancelAction({ id, oppId }: { id: string; oppId: string }) {
 }
 
 function ContactForm({ o, pendingId, onDone }: { o: OppRow; pendingId?: string; onDone: () => void }) {
-  const [f, setF] = useState({ date: toLocalInput(new Date()), type: CONTACT_TYPES[0], result: "efetivo" as "efetivo" | "sem_resposta", notes: "", complete: !!pendingId });
+  const [f, setF] = useState({ date: toLocalInput(new Date()), type: CONTACT_TYPES[0] as string, result: "efetivo" as "efetivo" | "sem_resposta", notes: "", complete: !!pendingId });
   const m = useAct(onDone, "Atendimento registrado", async () =>
     supabase.rpc("register_interaction", {
       _opp: o.id,
@@ -406,7 +406,7 @@ function SaleForm({ o, onDone }: { o: OppRow; onDone: () => void }) {
 }
 
 function LossForm({ o, onDone }: { o: OppRow; onDone: () => void }) {
-  const [reason, setReason] = useState(LOSS_REASONS[0]);
+  const [reason, setReason] = useState<string>(LOSS_REASONS[0]);
   const [other, setOther] = useState("");
   const [notes, setNotes] = useState("");
   const m = useAct(onDone, "Perda registrada", async () => supabase.rpc("register_loss", { _opp: o.id, _reason: reason === "Outro" ? other : reason, _notes: notes }));

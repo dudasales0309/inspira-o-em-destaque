@@ -40,10 +40,10 @@ function NewOpportunityForm({ clientId, onDone }: { clientId?: string; onDone: (
   const [mode, setMode] = useState<"existing" | "new">(clientId ? "existing" : "existing");
   const [search, setSearch] = useState("");
   const [selClient, setSelClient] = useState<string>(clientId ?? "");
-  const [nc, setNc] = useState({ full_name: "", phone: "", origin: ORIGINS[0], interests: "" });
+  const [nc, setNc] = useState({ full_name: "", phone: "", origin: ORIGINS[0] as string, interests: "" });
   const [storeId, setStoreId] = useState("");
   const [products, setProducts] = useState("");
-  const [origin, setOrigin] = useState(ORIGINS[0]);
+  const [origin, setOrigin] = useState<string>(ORIGINS[0]);
   const [owner, setOwner] = useState("");
   const [actDesc, setActDesc] = useState("");
   const [actDue, setActDue] = useState("");

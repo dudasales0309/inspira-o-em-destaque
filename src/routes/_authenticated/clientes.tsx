@@ -114,7 +114,7 @@ function ClientForm({ client, onDone }: { client: Client | null; onDone: () => v
   const [f, setF] = useState({
     full_name: client?.full_name ?? "",
     phone: client?.phone ?? "",
-    origin: client?.origin || ORIGINS[0],
+    origin: (client?.origin || ORIGINS[0]) as string,
     interests: client?.interests ?? "",
   });
   const m = useMutation({

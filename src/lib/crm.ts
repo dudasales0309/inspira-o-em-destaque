@@ -21,15 +21,15 @@ export const STAGE_LABEL: Record<Stage, string> = {
   ganho: "Ganho",
   perdido: "Perdido",
 };
-export const ORIGINS = ["Instagram", "Indicação", "Site", "Visita presencial"];
-export const CONTACT_TYPES = ["Ligação", "WhatsApp", "Visita na loja", "E-mail"];
+export const ORIGINS = ["Instagram", "Indicação", "Site", "Visita presencial"] as const;
+export const CONTACT_TYPES = ["Ligação", "WhatsApp", "Visita na loja", "E-mail"] as const;
 export const LOSS_REASONS = [
   "Preço acima do orçamento",
   "Prazo de entrega",
   "Comprou na concorrência",
   "Desistiu da compra",
   "Outro",
-];
+] as const;
 
 export type Me = {
   id: string;
