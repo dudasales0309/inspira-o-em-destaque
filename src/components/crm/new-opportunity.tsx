@@ -8,7 +8,6 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
 import { ORIGINS, errMsg, useMe, useStaff, useStores } from "@/lib/crm";
 import { NativeSelect } from "./native-select";
 
@@ -223,7 +222,6 @@ function NewOpportunityForm({ clientId, onDone }: { clientId?: string; onDone: (
         </div>
       </div>
 
-      <Textarea className="hidden" readOnly />
       <Button type="submit" className="w-full" size="lg" disabled={m.isPending}>
         {m.isPending ? "Salvando..." : "Cadastrar oportunidade"}
       </Button>
